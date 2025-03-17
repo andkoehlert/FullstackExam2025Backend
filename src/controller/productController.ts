@@ -145,7 +145,7 @@ export async function deleteProductById(req: Request, res: Response): Promise<vo
       await connect();
    
       
-      // findByIdAndUpdate: find a document by its _id and update it with new data
+      // findByIdAndUpdate: find a document by its _id and deletes it
       const result = await ProductModel.findByIdAndDelete(id);
   
       if (!result) {
