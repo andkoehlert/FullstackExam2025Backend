@@ -11,13 +11,23 @@ DotenvFlow.config();
 const app: Application = express();
 
 
-const PORT: number = parseInt(process.env.PORT as string) || 4000;
-app.use('/api', routes)
+
+
 
 export function startServer() {
+  
 
-testConnection();
+  // JSON body parser - so it can understand json.
+  app.use(express.json());
+
+  app.use('/api', routes)
+
+
+  // test connection
+  testConnection();
    
+  // start server
+  const PORT: number = parseInt(process.env.PORT as string) || 4000;
     app.listen(PORT, function() {
       console.log("Server is running on port: " + PORT);
     })
