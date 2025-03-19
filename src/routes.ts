@@ -4,6 +4,7 @@ import { createProduct,
     getAllProducts, 
     getProductById, 
     updateProductById } from './controller/productController';
+import { loginUser, registerUser } from './controller/authController';
 
 const router: Router = Router();
 
@@ -25,5 +26,8 @@ router.get('/products/:id', getProductById);
 router.put('/products/:id', updateProductById)
 router.delete('/products/:id', deleteProductById)
 
+// auth
+router.post('/user/register', registerUser)
+router.post('/user/login', loginUser )
 
 export default router
