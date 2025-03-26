@@ -14,7 +14,7 @@ const router: Router = Router();
 // get, post, put, delete (crud)
 
 router.get('/', (req: Request, res: Response) => {
-    res.status(200).send({message: 'Welcome to the site'});
+    res.status(200).send({message: 'Hello & welcome'});
 });
 
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
