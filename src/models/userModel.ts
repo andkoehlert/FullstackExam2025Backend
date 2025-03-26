@@ -5,7 +5,7 @@ const userSchema = new Schema<User>({
   name: { type: String, required: true, min: 6, max: 255},
   email:{ type: String, required: true, min: 6, max: 255},
   password: { type: String, required: true, min: 6, max: 255},
-  registerDate: { type: Date, default: Date.now},
+  registerDate: { type: Date, required: false, default: Date.now},
   number: {type: Number, required: false, min: 8, max: 255},
   role: {type: String, required: false}
 

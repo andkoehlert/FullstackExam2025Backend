@@ -117,6 +117,7 @@ export async function loginUser(req: Request, res: Response) {
 
     await connect();
 
+
     const user: User | null = await userModel.findOne({email: req.body.email});
 
     if (!user) {
@@ -151,9 +152,6 @@ export async function loginUser(req: Request, res: Response) {
         res.status(200).header("auth-token", token).json({error: null, data: {userId, token}})
 
     }
-    // find the user in the repository
-
-    // create auth token and send it back
 
   }
 
@@ -165,6 +163,35 @@ export async function loginUser(req: Request, res: Response) {
   finally {
       await disconnect();
   }
+}
+
+/**
+ * Using NextFunction to pass the controlflow to the next function.
+ * (So we can add it to our router so users will need a token for specific actions)
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function verifyToken(req: Request, res: Response, next: NextFunction) {
+
+  const token = req.header("auth-token");
+
+  if (!token) {
+      res.status(400).json({error: "Access Denied."})
+      return;
+  }
+
+  try {
+    if (token)
+      jwt.verify(token, process.env.TOKEN_SECRET as string);
+
+      next();
+  }
+
+  catch {
+      res.status(401).send("Invaild Token");
+  }
+
 }
 
 
