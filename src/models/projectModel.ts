@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Project } from '../interfaces/Project'
+import { Project } from '../interfaces/project'
 
 
 
