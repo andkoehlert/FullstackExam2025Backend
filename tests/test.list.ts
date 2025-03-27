@@ -4,6 +4,7 @@ import {test} from '@playwright/test';
 
 import health from './health.test';
 import userTestCollection from './user.test';
+import productCreateCollection from './productCreate.test'
 import dotenvFlow from 'dotenv-flow';
 import {connect, disconnect} from "../src/repositroy/database"
 import {userModel} from "../src/models/userModel"
@@ -45,3 +46,4 @@ setup();
 
 test.describe(health);
 test.describe(userTestCollection);
+test.describe(productCreateCollection)

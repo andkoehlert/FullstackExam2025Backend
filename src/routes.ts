@@ -18,7 +18,7 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
-router.post('/products', createProduct);
+router.post('/products',  createProduct);
 
 router.get('/products', getAllProducts);
 // The :id is now available in the URL

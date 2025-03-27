@@ -8,6 +8,6 @@ export default function health() {
     const json = await response.json();
 
     expect(response.status()).toBe(200);
-    expect(json).toEqual({message: 'Welcome to the site'})
+    expect(json).toEqual({message: 'Hello & welcome'})
   })
 }
