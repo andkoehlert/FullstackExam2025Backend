@@ -11,18 +11,20 @@ export default function productCreateCollection() {
     //------------------------------------------------------------------------------
     // Create test objects
     //------------------------------------------------------------------------------
+    const random = Math.floor(Math.random() * 1000000); 
+    const email = `testuser${random}@larsen.com`;
+
+
     const userReg = {
         name: "Lars Larsen",
-        email: "mail@larsen2.com",
+        email,
         password: "12345678"
-    }
-
-    const userLogin = {
-        email: "mail@larsen2.com",
+      };
+      
+      const userLogin = {
+        email,
         password: "12345678"
-    }
-
-
+      };
         //------------------------------------------------------------------------------
         // Register user
         //------------------------------------------------------------------------------
