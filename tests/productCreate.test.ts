@@ -13,12 +13,12 @@ export default function productCreateCollection() {
     //------------------------------------------------------------------------------
     const userReg = {
         name: "Lars Larsen",
-        email: "mail@larsen.com",
+        email: "mail@larsen2.com",
         password: "12345678"
     }
 
     const userLogin = {
-        email: "mail@larsen.com",
+        email: "mail@larsen2.com",
         password: "12345678"
     }
 
