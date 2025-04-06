@@ -27,7 +27,13 @@ export default function productCreateCollection() {
         // Register user
         //------------------------------------------------------------------------------
         let response = await request.post("/api/user/register", { data: userReg });
+        
         let json = await response.json();
+
+        if (response.status() !== 200) {
+            const errorText = await response.text();
+            console.error("Register failed:", errorText);
+          }
 
        
         expect(response.status()).toBe(200);
@@ -35,7 +41,20 @@ export default function productCreateCollection() {
         // Login user
         //------------------------------------------------------------------------------
         response = await request.post("/api/user/login", { data: userLogin });
-        json = await response.json();
+
+        try {
+            json = await response.json();
+
+        } catch (err) {
+            const text = await response.text();
+            console.error("Login response not json:", text)
+            throw new Error("Login response is not vaild JSON");
+        }
+
+        if (!json.data?.token) {
+            console.error("Login JSON missing token:", json)
+            throw new Error("No token returned from login");
+        }
 
         const token = json.data.token;
         const userId = json.data.userId;
