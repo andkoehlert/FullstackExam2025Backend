@@ -30,7 +30,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
   
-      # Spin up MongoDB Docker instance in GitHub Actions test3
+      # Spin up MongoDB Docker instance in GitHub Actions test4
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.12.0
         with:
@@ -40,9 +40,7 @@ jobs:
         run: |
             touch .env
             echo "DBHOST=${{secrets.API}}" >> .env
-            echo "JWT_EXPIRES_IN=${{secrets.JWT_EXPIRES_IN}}" >> .env
-            echo "TOKEN_SECRET=${{secrets.TOKEN_SECRET}}" >> .env
-
+           
       - name: Test printing your secret (Remove this step in production)
         run: |
             cat .env
