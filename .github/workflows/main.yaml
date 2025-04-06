@@ -30,7 +30,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
   
-      # Spin up MongoDB Docker instance in GitHub Actions test6
+      # Spin up MongoDB Docker instance in GitHub Actions test7
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.12.0
         with:
