@@ -15,7 +15,7 @@ const app: Application = express();
 export function startServer() {
   
   app.use(cors({
-    origin: ['http://localhost:3000', 'https://fullstackexam2025backend.onrender.com'],
+    origin: 'http://localhost:3000',
     credentials: true,
     methods: 'GET, PUT, POST, DELETE',
     allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accepts'],
