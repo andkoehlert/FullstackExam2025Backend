@@ -1,8 +1,11 @@
 import {Router, Request, Response} from 'express';
 import { createProduct, 
+    createProject, 
     deleteProductById, 
     getAllProducts, 
+    getAllProjects, 
     getProductById, 
+    getStatusProject, 
     updateProductById } from './controller/productController';
 import { loginUser, registerUser, verifyToken } from './controller/authController';
 
@@ -70,6 +73,9 @@ router.get('/', (req: Request, res: Response) => {
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
 router.post('/products',  createProduct);
 
+router.post('/project',  createProject);
+
+
 
 
 
@@ -92,7 +98,43 @@ router.post('/products',  createProduct);
 *                 $ref: "#/components/schemas/Product"
 */
 router.get('/products', getAllProducts);
+
+
+router.get('/projects', getAllProjects);
+
+router.get('/projects/status/:status', getStatusProject);
+
+
+
+
+
 // The :id is now available in the URL
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     tags:
+ *       - Product Routes
+ *     summary: Specific producks
+ *     description: Retrieves a specific producks based on it id.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A producks in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+ */
 router.get('/products/:id', getProductById);
 
 // update and delete

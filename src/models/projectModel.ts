@@ -9,7 +9,11 @@ const projectSchema = new Schema<Project>({
   lokation: { type: String, required: true, min: 6, max: 255},
   startDate: { type: Date, default: Date.now},
   endDate: { type: Date, default: Date.now},
-  status: {type: String, required: false},
+  status: {
+    type: String,
+    enum: ["not-started", "in-progress", "completed", "delayed"],
+    default: "not-started"
+  },
   contract: {type: String, required: false}
 
 });

@@ -61,6 +61,20 @@ export function setupDocs(app: Application) {
                         number: { type: 'number' },
                         role: { type: 'string' },
                     },
+                    
+                },
+                Project: {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string' },
+                        description: { type: 'string' },
+                        lokation: { type: 'string' },
+                        startDate: {  type: 'string', format: 'date' },
+                        endDate:  { type: 'string', format: 'date' },
+                        status: { type: 'string' },
+                        contract: { type: 'string' },
+                    },
+                    
                 },
             },
         }

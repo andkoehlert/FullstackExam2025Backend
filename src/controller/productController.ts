@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { ProductModel } from '../models/productModel';
+import {projectModel} from '../models/projectModel'
 import {connect, disconnect} from '../repositroy/database'
 import { error } from 'console';
 
@@ -41,6 +42,39 @@ export async function createProduct(req: Request, res: Response): Promise<void> 
 
 
 /**
+ * Create a new project in the data source based on the request body.
+ * @param req 
+ * @param res 
+ */
+export async function createProject(req: Request, res: Response): Promise<void> {
+ 
+  const data = req.body;
+
+  try {
+    await connect();
+
+    // This takes the req.body data and puts it into the projectModel
+    const project = new projectModel(data)
+    // This will get a new project document and use the save command on.
+    // Save project based on productModel
+    const result = await project.save();
+
+
+    res.status(201).send(result);
+  }
+
+  catch (err) {
+    res.status(500).send("Error creating project:" + err);
+  }
+
+  finally {
+    await disconnect();
+  }
+
+}
+
+
+/**
  * Gets all products from the data sources
  * @param req 
  * @param res 
@@ -66,6 +100,61 @@ export async function getAllProducts(req: Request, res: Response): Promise<void>
     await disconnect();
   }
 
+}
+
+
+/**
+ * Gets all projects from the data sources
+ * @param req 
+ * @param res 
+ */
+
+export async function getAllProjects(req: Request, res: Response): Promise<void> {
+ 
+  // Dont need body because we not sending any data. This is a get request.
+  try {
+    await connect();
+ 
+    // using the find() method 
+    const result = await projectModel.find({});
+
+    res.status(200).send(result);
+  }
+
+  catch (err) {
+    res.status(500).send("Error fetching product:" + err);
+  }
+
+  finally {
+    await disconnect();
+  }
+
+}
+
+
+
+/**
+ * Get projects based on status
+ * @param req
+ * @param res
+ */
+export async function getStatusProject(req: Request, res: Response) {
+  // using params to get status in the URL. projects/status/completed.  
+  // Could also use req.query.status. projects?status=completed.
+
+  const status = req.params.status;  
+
+
+  try {
+      await connect();
+      const result = await projectModel.find({ status });      
+      res.status(200).send(result);
+  } catch {
+      res.status(500).send("Error retrieving status");
+  }
+  finally {
+      await disconnect();
+  }
 }
 
 
