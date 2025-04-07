@@ -1,5 +1,5 @@
 import cors from 'cors';
-
+import { setupDocs } from '../util/documentation';
 import express, {Application, Request, Response} from 'express'
 import DotenvFlow from 'dotenv-flow';
 import routes from './routes';
@@ -15,7 +15,7 @@ const app: Application = express();
 export function startServer() {
   
   app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://fullstackexam2025backend.onrender.com'],
     credentials: true,
     methods: 'GET, PUT, POST, DELETE',
     allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accepts'],
@@ -26,6 +26,7 @@ export function startServer() {
 
   app.use('/api', routes)
 
+  setupDocs(app);
 
   // test connection
   testConnection();
