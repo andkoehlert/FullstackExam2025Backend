@@ -9,7 +9,7 @@ import {testConnection} from './repositroy/database'
 DotenvFlow.config();
 
 
-// create express application
+// create express application test
 const app: Application = express();
 
 export function startServer() {
