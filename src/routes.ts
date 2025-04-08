@@ -99,8 +99,55 @@ router.post('/project',  createProject);
 */
 router.get('/products', getAllProducts);
 
+/**
+* @swagger
+* /Projects:
+*   get:
+*     tags:
+*       - Project Routes
+*     summary: Retrieves a list of Project
+*     description: Retrieves a list of Project as JSON objects.
+*     responses:
+*       200:
+*         description: A list of Project JSON objects in an array.
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: "#/components/schemas/Project"
+*/
+
 
 router.get('/projects', getAllProjects);
+
+
+/**
+ * @swagger
+ * /projects/status/{status}:
+ *   get:
+ *     tags:
+ *       - Project Routes
+ *     summary: Get projects by status
+ *     description: Returns projects filtered by their status.
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         description: Status to filter projects by
+ *         schema:
+ *           type: string
+ *           enum: [not-started, in-progress, completed, delayed]
+ *     responses:
+ *       200:
+ *         description: A list of projects with the given status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Project"
+ */
 
 router.get('/projects/status/:status', getStatusProject);
 
