@@ -1,4 +1,5 @@
 
+import { User } from './user';
 
 
 export interface Project extends Document {
@@ -9,4 +10,5 @@ export interface Project extends Document {
   endDate: Date;
   status: string;
   contract: string;
+  _createdBy: User['id'];
 }

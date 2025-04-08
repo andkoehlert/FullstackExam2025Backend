@@ -14,7 +14,9 @@ const projectSchema = new Schema<Project>({
     enum: ["not-started", "in-progress", "completed", "delayed"],
     default: "not-started"
   },
-  contract: {type: String, required: false}
+  contract: {type: String, required: false},
+  _createdBy: { type: String, ref: 'User', required: true}
+
 
 });
 

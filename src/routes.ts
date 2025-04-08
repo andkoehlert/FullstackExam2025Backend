@@ -4,8 +4,11 @@ import { createProduct,
     deleteProductById, 
     getAllProducts, 
     getAllProjects, 
+    deleteProjectById,
     getProductById, 
+    getProjectById,
     getStatusProject, 
+    updateProjectById,
     updateProductById } from './controller/productController';
 import { loginUser, registerUser, verifyToken } from './controller/authController';
 
@@ -73,6 +76,45 @@ router.get('/', (req: Request, res: Response) => {
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
 router.post('/products',  createProduct);
 
+
+
+
+/**
+ * @swagger
+ * /projects:
+ *   post:
+ *     tags:
+ *       - project Routes
+ *     summary: Create a new project
+ *     description: Create a new project
+ *     security:
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Project"
+ *           example:
+ *             name: "Steel2"
+ *             description: "Something something"
+ *             imageURL: "https://random-d.uk/api/v2/randomimg"
+ *             category: Steel
+ *             quantity: 3
+ *             stock: 3
+ *             supplier: "something something"
+ *             orderDate:  "2025-04-07"
+ *             arrivalDate: "2025-04-12"        
+ *             _createdBy: "67f398160b555c054a93cc91"
+ *     responses:
+ *       201:
+ *         description: Project created succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Project"
+ */
+// When we access products endpoint it will fire the 'createProject' from the controller.
 router.post('/projects',  createProject);
 
 
@@ -163,8 +205,8 @@ router.get('/projects/status/:status', getStatusProject);
  *   get:
  *     tags:
  *       - Product Routes
- *     summary: Specific producks
- *     description: Retrieves a specific producks based on it id.
+ *     summary: Specific products
+ *     description: Retrieves a specific products based on it id.
  *     parameters:
  *       - in: path
  *         name: id
@@ -174,7 +216,7 @@ router.get('/projects/status/:status', getStatusProject);
  *           type: string
  *     responses:
  *       200:
- *         description: A producks in the format of a JSON object.
+ *         description: A products in the format of a JSON object.
  *         content:
  *           application/json:
  *             schema:
@@ -183,6 +225,36 @@ router.get('/projects/status/:status', getStatusProject);
  *                 $ref: "#/components/schemas/Product"
  */
 router.get('/products/:id', getProductById);
+
+
+// The :id is now available in the URL
+
+/**
+ * @swagger
+ * /projects/{id}:
+ *   get:
+ *     tags:
+ *       - Projects Routes
+ *     summary: Specific project
+ *     description: Retrieves a specific projects based on it id.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A projects in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Projects"
+ */
+router.get('/projects/:id', getProjectById);
 
 // update and delete
 
@@ -221,7 +293,101 @@ router.get('/products/:id', getProductById);
  *               $ref: "#/components/schemas/Product"
  */
 router.put('/products/:id', verifyToken, updateProductById)
+
+
+/**
+ * @swagger
+ * /projects/{id}:
+ *   put:
+ *     tags:
+ *       - Project Routes
+ *     summary: Updates a specific Project
+ *     description: Updates a specific Project based on its id
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID from repository
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Project"
+ *
+ *     responses:
+ *       200:
+ *         description: Project updated succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Project"
+ */
+router.put('/projects/:id', verifyToken, updateProjectById)
+
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     tags:
+ *       - product Routes
+ *     summary: Deletes a specific product
+ *     description: Deletes a specific product based on it id
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *
+ *     responses:
+ *       201:
+ *         description: product deleted succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Product"
+ */
+
 router.delete('/products/:id', verifyToken, deleteProductById)
+
+
+
+/**
+ * @swagger
+ * /projects/{id}:
+ *   delete:
+ *     tags:
+ *       - product Routes
+ *     summary: Deletes a specific project
+ *     description: Deletes a specific project based on it id
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *
+ *     responses:
+ *       201:
+ *         description: project deleted succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Project"
+ */
+router.delete('/projects/:id', verifyToken, deleteProjectById)
 
 
 

@@ -183,6 +183,30 @@ export async function getProductById(req: Request, res: Response): Promise<void>
 }
 
 
+/**
+ * Gets a specefic project from the data sources
+ * @param req 
+ * @param res 
+ */
+
+export async function getProjectById(req: Request, res: Response): Promise<void> {
+ 
+  try {
+    await connect();
+ 
+    // object containing parameter values parsed from the URL path
+    const id = req.params.id;
+    // using the find() method 
+    const result = await projectModel.find({_id: id});
+
+    res.status(200).send(result);
+  }
+
+  catch (err) {
+    res.status(500).send("Error fetching product:" + err);
+  }
+}
+
 
 /**
  * Updates a specific product
@@ -203,7 +227,7 @@ try {
     const result = await ProductModel.findByIdAndUpdate(id, req.body);
 
     if (!result) {
-    res.status(404).send('Cant update prodcut with id=' + id);
+    res.status(404).send('Cant update product with id=' + id);
     }
 
     else {
@@ -217,6 +241,42 @@ try {
   }
 }
 
+
+/**
+ * Updates a specific project
+ * @param req 
+ * @param res 
+ */
+
+export async function updateProjectById(req: Request, res: Response): Promise<void> {
+ 
+  // object containing parameter values parsed from the URL path
+  const id = req.params.id;  
+  
+  try {
+      await connect();
+   
+      
+      // findByIdAndUpdate: find a document by its _id and update it with new data
+      const result = await projectModel.findByIdAndUpdate(id, req.body);
+  
+      if (!result) {
+      res.status(404).send('Cant update project with id=' + id);
+      }
+  
+      else {
+        res.status(200).send('Product updated succesfully updated.')
+      }
+  
+    }
+  
+    catch (err) {
+      res.status(500).send("Error updating product by id. Error:" + err);
+    }
+  }
+  
+  
+  
 
 
 /**
@@ -251,3 +311,32 @@ export async function deleteProductById(req: Request, res: Response): Promise<vo
       res.status(500).send("Error updating product by id. Error:" + err);
     }
   }
+
+
+
+  export async function deleteProjectById(req: Request, res: Response): Promise<void> {
+ 
+    // object containing parameter values parsed from the URL path
+    const id = req.params.id;  
+    
+    try {
+        await connect();
+     
+        
+        // findByIdAndUpdate: find a document by its _id and deletes it
+        const result = await projectModel.findByIdAndDelete(id);
+    
+        if (!result) {
+        res.status(404).send('Cant delete prodcut with id=' + id);
+        }
+    
+        else {
+          res.status(200).send('Product deleted succesfully.')
+        }
+    
+      }
+    
+      catch (err) {
+        res.status(500).send("Error updating product by id. Error:" + err);
+      }
+    }
