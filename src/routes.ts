@@ -73,7 +73,7 @@ router.get('/', (req: Request, res: Response) => {
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
 router.post('/products',  createProduct);
 
-router.post('/project',  createProject);
+router.post('/projects',  createProject);
 
 
 
