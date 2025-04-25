@@ -10,6 +10,7 @@ import { createProduct,
     getStatusProject, 
     updateProjectById,
     updateProductById } from './controller/productController';
+    import { createEmployee, getAllEmployees } from './controller/employeeController'
 import { loginUser, registerUser, verifyToken } from './controller/authController';
 
 const router: Router = Router();
@@ -76,6 +77,8 @@ router.get('/', (req: Request, res: Response) => {
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
 router.post('/products',  createProduct);
 
+// createEmployee
+router.post('/employee',  createEmployee);
 
 
 
@@ -140,6 +143,11 @@ router.post('/projects',  createProject);
 *                 $ref: "#/components/schemas/Product"
 */
 router.get('/products', getAllProducts);
+
+
+// get all employees
+router.get('/employees', getAllEmployees);
+
 
 /**
 * @swagger
