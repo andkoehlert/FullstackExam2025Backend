@@ -3,7 +3,7 @@ import { employeeModel } from '../models/employee';
 import {connect, disconnect} from '../repositroy/database'
 
 /**
- * Create a new User in the data source based on the request body.
+ * Create a new employee in the data source based on the request body.
  * @param req 
  * @param res 
  */
