@@ -8,7 +8,7 @@ export interface Product extends Document {
   quantity: number;
   stock: number;
   supplier: string;
-  orderDate?: Date;
-  arrivalDate?: Date;
+  orderDate?: String;
+  arrivalDate?: String;
   _createdBy: User['id'];
 }
