@@ -9,8 +9,8 @@ const productSchema = new Schema<Product>({
   quantity: { type: Number, required: true},
   stock: { type: Number, required: true},
   supplier: { type: String, required: true},
-  orderDate: { type: Date, required: true, default: 0 },
-  arrivalDate: { type: Date, required: true, default: 0},
+  orderDate: { type: String, required: true, default: 0 },
+  arrivalDate: { type: String, required: true, default: 0},
   _createdBy: { type: String, ref: 'User', required: true}
 })
 
