@@ -1,4 +1,5 @@
-import {Router, Request, Response} from 'express';
+import express, { Router, Request, Response } from 'express';
+
 import { createProduct, 
     createProject, 
     deleteProductById, 
@@ -11,6 +12,8 @@ import { createProduct,
     updateProjectById,
     updateProductById } from './controller/productController';
     import { createEmployee, getAllEmployees } from './controller/employeeController'
+    import {uploadImage} from './controller/uploadImage'
+    import {upload} from './middlewares/multer'
 import { loginUser, registerUser, verifyToken } from './controller/authController';
 
 const router: Router = Router();
@@ -37,7 +40,7 @@ router.get('/', (req: Request, res: Response) => {
     res.status(200).send({message: 'Hello & welcome'});
 });
 
-
+router.post('/upload', upload.single('image'), uploadImage);
 
 /**
  * @swagger
