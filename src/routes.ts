@@ -1,16 +1,20 @@
 import express, { Router, Request, Response } from 'express';
 
-import { createProduct, 
-    createProject, 
+import { 
+    createProduct, 
     deleteProductById, 
     getAllProducts, 
-    getAllProjects, 
-    deleteProjectById,
     getProductById, 
-    getProjectById,
-    getStatusProject, 
-    updateProjectById,
     updateProductById } from './controller/productController';
+
+    import { 
+        createProject, 
+        getAllProjects, 
+        deleteProjectById,
+        getProjectById,
+        getStatusProject, 
+        updateProjectById, } from './controller/projectController';
+    
     import { createEmployee, getAllEmployees } from './controller/employeeController'
     import {uploadImage} from './controller/uploadImage'
     import {upload} from './middlewares/multer'
