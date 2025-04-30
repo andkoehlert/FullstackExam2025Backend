@@ -8,6 +8,10 @@ import { error } from 'console';
 
 
 
+interface ProductItem {
+  productId: string;
+  quantity: number;
+}
 
 
 /**
@@ -17,26 +21,97 @@ import { error } from 'console';
  */
 export async function createProject(req: Request, res: Response): Promise<void> {
  
-  const data = req.body;
+  // destruct
+  const { name, description, lokation, startDate, endDate, status, contract, products, _createdBy } = req.body;
 
   try {
     await connect();
 
-    // This takes the req.body data and puts it into the projectModel
+    // check if all products exist in the database
+    const productIds = products.map((product: {productId: string}) => product.productId);
+    const existingProducts = await ProductModel.find({'_id': {$in: productIds}})
+
+    // Check for invalid products (if quantity is 0 or less)
+    const invalidProducts = products.some((p: any) => p.quantity <= 0);
+    if (invalidProducts) {
+    res.status(400).send("All quantities must be positive");
+    return;
+    }
+
+    
+    const uniqueIds = new Set(productIds);
+    if (uniqueIds.size !== productIds.length) {
+    res.status(400).send("Duplicate products not allowed");
+    return;
+    }
+
+    
+    if (existingProducts.length !== productIds.length) {
+      res.status(400).send("some products do not exist.");
+      return;
+    }
+
+        for (const item of products) {
+          const product = existingProducts.find(p => p._id.equals(item.productId));
+          if (!product || product.stock < item.quantity) {
+            res.status(400).send(`Insufficient stock for ${product?.name}`);
+            return;
+          }
+        }
+     
+       const bulkWriteResult = await ProductModel.bulkWrite(
+          products.map((item: ProductItem) => ({
+            updateOne: {
+              filter: { 
+              _id: item.productId, 
+              stock: { $gte: item.quantity } 
+            },
+              update: { $inc: { stock: -item.quantity } }
+            }
+          }))
+        );
+
+        const updatedCount = bulkWriteResult.modifiedCount;
+        if (updatedCount !== products.length) {
+        res.status(400).send("One or more products have insufficient stock.");
+        return;
+        }
+
+
+
+    const projectProducts = products.map((product: { productId: string, quantity: number }) => {
+      return {
+        productId: product.productId,
+        quantity: product.quantity
+      };
+    });
+
+    // create project
+    const project = new projectModel({
+      name,
+      description,
+      lokation,
+      startDate,
+      endDate,
+      status,
+      contract,
+      _createdBy,
+      products: projectProducts // adding products here
+    });
+
+
+  /*   // This takes the req.body data and puts it into the projectModel
     const project = new projectModel(data)
     // This will get a new project document and use the save command on.
-    // Save project based on productModel
-    const result = await project.save();
+ */
+  // Save project based on productModel
+  const result = await project.save();
 
+  res.status(201).send(result);
 
-    res.status(201).send(result);
-  }
-
-  catch (err) {
+  } catch (err) {
     res.status(500).send("Error creating project:" + err);
-  }
-
-  finally {
+  } finally {
     await disconnect();
   }
 
@@ -140,28 +215,59 @@ export async function updateProjectById(req: Request, res: Response): Promise<vo
  
   // object containing parameter values parsed from the URL path
   const id = req.params.id;  
+  const { name, description, lokation, startDate, endDate, status, contract, products } = req.body;
+
   
   try {
       await connect();
    
-      
-      // findByIdAndUpdate: find a document by its _id and update it with new data
+      if (products) {
+        const productIds = products.map((product: {productId: string}) => product.productId);
+        const existingProducts = await ProductModel.find({'_id': { $in: productIds }});
+
+        if (existingProducts.length !== productIds.length) {
+          res.status(400).send("Some products do not exist");
+          return;
+        }
+      }
+
+      const updatedProject = await projectModel.findByIdAndUpdate(id, {
+        $set: {
+          name,
+          description,
+          lokation,
+          startDate,
+          endDate,
+          status,
+          contract,
+          products
+        },
+      }, {new: true}); // this will return the opdated object
+
+      if (!updatedProject) {
+        res.status(404).send("Project not found");
+        return;
+      }
+
+      res.status(200).send(updatedProject);
+
+
+      /* // findByIdAndUpdate: find a document by its _id and update it with new data
       const result = await projectModel.findByIdAndUpdate(id, req.body);
   
       if (!result) {
-      res.status(404).send('Cant update project with id=' + id);
-      }
-  
-      else {
-        res.status(200).send('Product updated succesfully updated.')
+      res.status(404).send('Cant update project with id=' + id); */
+
+      } catch (err) {
+        res.status(500).send("Error updating project by id. Error:" + err)
+      } finally {
+        await disconnect();
       }
   
     }
   
-    catch (err) {
-      res.status(500).send("Error updating product by id. Error:" + err);
-    }
-  }
+   
+  
   
   
   

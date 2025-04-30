@@ -15,8 +15,14 @@ const projectSchema = new Schema<Project>({
     default: "not-started"
   },
   contract: {type: String, required: false},
-  _createdBy: { type: String, ref: 'User', required: true}
-
+  _createdBy: { type: String, ref: 'User', required: true},
+  
+  products: [
+    {
+      productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },  // Reference til 'Product'
+      quantity: { type: Number, required: true },  // Hvor meget af produktet der bruges
+    },
+  ],
 
 });
 
