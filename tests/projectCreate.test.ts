@@ -51,6 +51,8 @@ response = await request.post("/api/products", {
   data: product,
   headers: { "auth-token": token }
 });
+
+expect(response.status()).toBe(201);
 const createdProduct = await response.json();
 
 // Create employee
@@ -62,6 +64,8 @@ response = await request.post("/api/employees", {
   data: employee,
   headers: { "auth-token": token }
 });
+
+expect(response.status()).toBe(201);
 const createdEmployee = await response.json();
 
 
