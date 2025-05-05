@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose';
 import { Project } from '../interfaces/project'
 
 
-
 const projectSchema = new Schema<Project>({
   name: { type: String, required: true, min: 6, max: 255},
   description:{ type: String, required: true, min: 6, max: 255},
@@ -15,8 +14,18 @@ const projectSchema = new Schema<Project>({
     default: "not-started"
   },
   contract: {type: String, required: false},
-  _createdBy: { type: String, ref: 'User', required: true}
+  _createdBy: { type: String, ref: 'User', required: true},
+  
+  products: [
+    {
+      productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },  // Reference til 'Product'
+      quantity: { type: Number, required: true },  // Hvor meget af produktet der bruges
+    },
+  ],
 
+  employees: [
+
+  ]
 
 });
 

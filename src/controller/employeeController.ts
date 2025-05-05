@@ -56,3 +56,12 @@ export async function getAllEmployees(req: Request, res: Response): Promise<void
   await  disconnect();
   }
 }
+
+/**
+ * Gets a specefic project from the data sources
+ * @param req 
+ * @param res 
+ */
+
+
+

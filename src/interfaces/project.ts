@@ -11,4 +11,13 @@ export interface Project extends Document {
   status: string;
   contract: string;
   _createdBy: User['id'];
+
+  products: {
+    productId: string;     
+    quantity: number;      
+  }[];
+
+  employees: {
+    employeeId: string;
+  }[];
 }
