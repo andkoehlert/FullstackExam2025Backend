@@ -46,17 +46,19 @@ export default function projectCreateCollection() {
  
     // Creating project with status "completed"
     const completedProject = {
-      name: "Test Project Completed",
-      description: "A completed test project",
+      employees: [],
+      name: "andreas",
+      description: "The best something",
       lokation: "https://picsum.photos/500/500",
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
-      status: "completed",
-      contract: "test contract",
-      _createdBy: userId,
- 
+      startDate: "2025-10-20T00:00:00.000Z",
+      endDate: "2026-10-20T00:00:00.000Z",
+      status: "in-progress",
+      contract: "something",
+      __v: 0,
+      products: [],
+      _createdBy: userId
     };
-
+    
     response = await request.post("/api/projects", {
       data: completedProject,
       headers: { "auth-token": token }
