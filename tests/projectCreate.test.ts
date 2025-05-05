@@ -43,19 +43,20 @@ export default function projectCreateCollection() {
     const userId = json.data.userId;
 
     // Create product
-    const productData = {
-      name: "Product 1",
-      price: 100,
-      description: "A sample product",
-      supplier: "Supplier 1",
-      quantity: 10,
-      category: "Category 1",
-      imageURL: "http://image.url",
-      _createdBy: userId
+    const completedProduct = {
+      name: "Test Product",
+      description: "A test product",
+      imageURL: "https://picsum.photos/500/500",  
+      category: "Electronics",  
+      quantity: 100,            
+      stock: 50,               
+      supplier: "Test Supplier", 
+      _createdBy: userId,      
+      orderDate: new Date().toISOString(),   
+      arrivalDate: new Date().toISOString(), 
     };
-
     response = await request.post("/api/products", {
-      data: productData,
+      data: completedProduct,
       headers: { "auth-token": token }
     });
 
