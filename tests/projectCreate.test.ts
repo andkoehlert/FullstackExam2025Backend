@@ -41,6 +41,31 @@ test("Project filter by status", async ({ request }) => {
   const token = json.data.token;
   const userId = json.data.userId;
 
+// Create product
+const product = {
+  name: "Test Product",
+  stock: 10
+ 
+};
+response = await request.post("/api/products", {
+  data: product,
+  headers: { "auth-token": token }
+});
+const createdProduct = await response.json();
+
+// Create employee
+const employee = {
+  name: "Test Employee",
+  position: "Developer"
+};
+response = await request.post("/api/employees", {
+  data: employee,
+  headers: { "auth-token": token }
+});
+const createdEmployee = await response.json();
+
+
+
   // Creating project with status "completed"
   const completedProject = {
     name: "Test Project Completed",
@@ -50,7 +75,10 @@ test("Project filter by status", async ({ request }) => {
     endDate: new Date().toISOString(),
     status: "completed",
     contract: "test contract",
-    _createdBy: userId
+    _createdBy: userId,
+    products: [{ productId: createdProduct._id, quantity: 1 }],
+employees: [{ employeeId: createdEmployee._id }]
+
   };
 
   response = await request.post("/api/projects", {
