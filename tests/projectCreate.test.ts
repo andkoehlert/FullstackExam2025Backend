@@ -52,6 +52,9 @@ response = await request.post("/api/products", {
   headers: { "auth-token": token }
 });
 
+if (response.status() !== 201) {
+  console.log('Error creating product:', await response.text()); // Log error if status is not 201
+}
 expect(response.status()).toBe(201);
 const createdProduct = await response.json();
 
@@ -64,6 +67,10 @@ response = await request.post("/api/employees", {
   data: employee,
   headers: { "auth-token": token }
 });
+
+if (response.status() !== 201) {
+  console.log('Error creating employee:', await response.text()); // Log error if status is not 201
+}
 
 expect(response.status()).toBe(201);
 const createdEmployee = await response.json();
