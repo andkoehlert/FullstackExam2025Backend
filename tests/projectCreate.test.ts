@@ -44,9 +44,15 @@ test("Project filter by status", async ({ request }) => {
 // Create product
 const product = {
   name: "Test Product",
-  stock: 10
- 
+  stock: 10,
+  _createdBy: userId,  
+  supplier: "Test Supplier",  
+  quantity: 100,  
+  category: "Test Category",  
+  imageURL: "https://picsum.photos/200", 
+  description: "This is a test product."  
 };
+
 response = await request.post("/api/products", {
   data: product,
   headers: { "auth-token": token }
