@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose';
 import { Project } from '../interfaces/project'
 
 
-
 const projectSchema = new Schema<Project>({
   name: { type: String, required: true, min: 6, max: 255},
   description:{ type: String, required: true, min: 6, max: 255},
@@ -23,6 +22,10 @@ const projectSchema = new Schema<Project>({
       quantity: { type: Number, required: true },  // Hvor meget af produktet der bruges
     },
   ],
+
+  employees: [
+
+  ]
 
 });
 

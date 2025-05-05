@@ -16,4 +16,8 @@ export interface Project extends Document {
     productId: string;     
     quantity: number;      
   }[];
+
+  employees: {
+    employeeId: string;
+  }[];
 }
