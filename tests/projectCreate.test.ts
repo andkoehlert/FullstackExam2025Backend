@@ -59,6 +59,8 @@ export default function projectCreateCollection() {
       headers: { "auth-token": token }
     });
 
+    
+console.log('Error creating product:', await response.text());  
     expect(response.status()).toBe(201);
     const createdProduct = await response.json();
     const productId = createdProduct._id;  
