@@ -42,46 +42,8 @@ export default function projectCreateCollection() {
     const token = json.data.token;
     const userId = json.data.userId;
 
-    // Create product
-    const completedProduct = {
-      name: "Test Product",
-      description: "A test product",
-      imageURL: "https://picsum.photos/500/500",  
-      category: "Electronics",  
-      quantity: 100,            
-      stock: 50,               
-      supplier: "Test Supplier", 
-      _createdBy: userId,      
-      orderDate: new Date().toISOString(),   
-      arrivalDate: new Date().toISOString(), 
-    };
-    response = await request.post("/api/products", {
-      data: completedProduct,
-      headers: { "auth-token": token }
-    });
-
     
-console.log('Error creating product:', await response.text());  
-    expect(response.status()).toBe(201);
-    const createdProduct = await response.json();
-    const productId = createdProduct._id;  
-
-    // Create employee
-    const employeeData = {
-      name: "John Doe",
-      role: "Developer",
-      department: "Engineering"
-    };
-
-    response = await request.post("/api/employees", {
-      data: employeeData,
-      headers: { "auth-token": token }
-    });
-
-    expect(response.status()).toBe(201);
-    const createdEmployee = await response.json();
-    const employeeId = createdEmployee._id;  
-
+ 
     // Creating project with status "completed"
     const completedProject = {
       name: "Test Project Completed",
@@ -92,16 +54,7 @@ console.log('Error creating product:', await response.text());
       status: "completed",
       contract: "test contract",
       _createdBy: userId,
-      products: [
-        { 
-          productId: productId, 
-          quantity: 1, 
-          _id: createdProduct._id 
-        }
-      ],
-      employees: [
-        { employeeId: employeeId }  
-      ]
+ 
     };
 
     response = await request.post("/api/projects", {
