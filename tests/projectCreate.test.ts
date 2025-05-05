@@ -74,6 +74,9 @@ export default function projectCreateCollection() {
       data: delayedProject,
       headers: { "auth-token": token }
     });
+
+    console.log('Response Body:', await response.text());  // Log the body for more details
+
     expect(response.status()).toBe(201);
 
     // Collect the projects with status = completed
