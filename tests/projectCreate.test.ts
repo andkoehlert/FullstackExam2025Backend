@@ -4,21 +4,20 @@ interface Project {
   name: string;
   description: string;
   lokation: string;
-  startDate: string; 
+  startDate: string;
   endDate: string;
   status: string;
   contract: string;
   _createdBy: string;
-  products: { productId: string, quantity: number, _id: string }[];  // Ensure the _id is included here
-  employees: { employeeId: string }[];  // Just employeeId here
+  products: { productId: string, quantity: number, _id: string }[];
+  employees: { employeeId: string }[];
 }
 
 export default function projectCreateCollection() {
   test("Project filter by status", async ({ request }) => {
-    
     test.setTimeout(30_000);
-    
-    const random = Math.floor(Math.random() * 1000000); 
+
+    const random = Math.floor(Math.random() * 1000000);
     const email = `testuser${random}@project.com`;
 
     const userReg = {
@@ -42,9 +41,7 @@ export default function projectCreateCollection() {
     const token = json.data.token;
     const userId = json.data.userId;
 
-    
- 
-    // Creating project with status "completed"
+    // Create project with status "completed"
     const completedProject = {
       employees: [],
       name: "andreas",
@@ -52,13 +49,13 @@ export default function projectCreateCollection() {
       lokation: "https://picsum.photos/500/500",
       startDate: "2025-10-20T00:00:00.000Z",
       endDate: "2026-10-20T00:00:00.000Z",
-      status: "in-progress",
+      status: "completed",  // Completed status for testing
       contract: "something",
       __v: 0,
       products: [],
       _createdBy: userId
     };
-    
+
     response = await request.post("/api/projects", {
       data: completedProject,
       headers: { "auth-token": token }
@@ -96,5 +93,21 @@ export default function projectCreateCollection() {
     // Ensure all projects are completed
     const allAreCompleted = projects.every(project => project.status === "completed");
     expect(allAreCompleted).toBe(true);
+
+    // Collect the projects with status = delayed
+    response = await request.get("/api/projects/status/delayed", {
+      headers: { "auth-token": token }
+    });
+    expect(response.status()).toBe(200);
+
+    const delayedProjects: Project[] = await response.json();
+
+    // Check if it's an array
+    expect(Array.isArray(delayedProjects)).toBe(true);
+    expect(delayedProjects.length).toBeGreaterThanOrEqual(1);
+
+    // Ensure all projects are delayed
+    const allAreDelayed = delayedProjects.every(project => project.status === "delayed");
+    expect(allAreDelayed).toBe(true);
   });
 }
