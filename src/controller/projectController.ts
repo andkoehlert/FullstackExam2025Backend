@@ -13,6 +13,11 @@ interface ProductItem {
   quantity: number;
 }
 
+type EnrichedEmployee = {
+  employeeId: string;
+  name: string;
+  position: string;
+};
 
 /**
  * Create a new project in the data source based on the request body.
@@ -33,11 +38,12 @@ export async function createProject(req: Request, res: Response): Promise<void> 
             return;
           }
 
-          const employeeValidationError = await validateEmployees(employees);
+          const { error: employeeValidationError, enriched: enrichedEmployees } = await validateEmployees(employees);
           if (employeeValidationError) {
-            res.status(400).send(employeeValidationError)
+            res.status(400).send(employeeValidationError);
             return;
           }
+          
           
           const project = new projectModel({
             name,
@@ -52,9 +58,8 @@ export async function createProject(req: Request, res: Response): Promise<void> 
               productId: p.productId, 
               quantity: p.quantity 
             })),          
-            employees: (employees || []).map((e: {employeeId: string}) => ({
-              employeeId: e.employeeId
-            })) 
+            employees: enrichedEmployees
+
           
           })
     
@@ -72,23 +77,29 @@ export async function createProject(req: Request, res: Response): Promise<void> 
         }
 
         // Employees validation:
-        async function validateEmployees(employees: { employeeId: string}[]): Promise<string | null> {
+        async function validateEmployees(employees: { employeeId: string }[]): Promise<{ error: string | null; enriched: EnrichedEmployee[] }> {
             
         // Get all employees
           const employeeIds = employees.map(e => e.employeeId);
 
         // check for duplicates
          if (new Set(employeeIds).size !== (employeeIds).length) {
-          return "No duplicates allowed"
-         }
+          return { error: "No duplicates allowed", enriched: [] };
+        }
         // Query to db to find employees by their ID's.
         const existingEmployees = await employeeModel.find({ _id: {$in: employeeIds}})
         // if something is missing return error
          if (existingEmployees.length !== employeeIds.length) {
-          return "Some employees do not exist"
-         }
+          return { error: "Some employees do not exist", enriched: [] };
+        }
+
+        const enriched = existingEmployees.map(e => ({
+          employeeId: e._id.toString(),
+          name: e.name,
+          position: e.position
+        }));
         // if no error return null
-         return null;
+        return { error: null, enriched };
 
         }
 
@@ -150,8 +161,11 @@ export async function getAllProjects(req: Request, res: Response): Promise<void>
   try {
     await connect();
  
+    const result = await projectModel
+      .find({})
+      .populate('employees.employeeId', 'name position'); // <- Add this
+
     // using the find() method 
-    const result = await projectModel.find({});
 
     res.status(200).send(result);
   }
