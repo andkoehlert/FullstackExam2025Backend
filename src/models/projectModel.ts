@@ -24,7 +24,11 @@ const projectSchema = new Schema<Project>({
   ],
 
   employees: [
+    {
+      employeeId: { type: Schema.Types.ObjectId, ref: 'Employee', required: true }
 
+
+    }
   ]
 
 });

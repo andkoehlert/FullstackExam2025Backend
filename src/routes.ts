@@ -15,7 +15,7 @@ import {
         getStatusProject, 
         updateProjectById, } from './controller/projectController';
     
-    import { createEmployee, getAllEmployees } from './controller/employeeController'
+    import { createEmployee, getAllEmployees, updateEmployeeById, deleteEmployeeById, getEmployeeById } from './controller/employeeController'
     import {uploadImage} from './controller/uploadImage'
     import {upload} from './middlewares/multer'
 import { loginUser, registerUser, verifyToken } from './controller/authController';
@@ -241,6 +241,8 @@ router.get('/projects/status/:status', getStatusProject);
  */
 router.get('/products/:id', getProductById);
 
+router.get('/employees/:id', getEmployeeById);
+
 
 // The :id is now available in the URL
 
@@ -309,6 +311,8 @@ router.get('/projects/:id', getProjectById);
  */
 router.put('/products/:id', verifyToken, updateProductById)
 
+router.put('/employees/:id', verifyToken, updateEmployeeById)
+
 
 /**
  * @swagger
@@ -373,6 +377,8 @@ router.put('/projects/:id', verifyToken, updateProjectById)
  */
 
 router.delete('/products/:id', verifyToken, deleteProductById)
+
+router.delete('/Employees/:id', verifyToken, deleteEmployeeById)
 
 
 
