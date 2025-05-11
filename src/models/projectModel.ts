@@ -8,6 +8,8 @@ const projectSchema = new Schema<Project>({
   lokation: { type: String, required: true, min: 6, max: 255},
   startDate: { type: Date, default: Date.now},
   endDate: { type: Date, default: Date.now},
+  price: { type: Number, required: true, min: 0 },  
+  totalPrice: { type: Number, default: 0 },  
   status: {
     type: String,
     enum: ["not-started", "in-progress", "completed", "delayed"],
@@ -18,8 +20,8 @@ const projectSchema = new Schema<Project>({
   
   products: [
     {
-      productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },  // Reference til 'Product'
-      quantity: { type: Number, required: true },  // Hvor meget af produktet der bruges
+      productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true }, 
+      quantity: { type: Number, required: true },
     },
   ],
 

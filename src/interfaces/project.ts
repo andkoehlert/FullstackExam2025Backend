@@ -8,13 +8,16 @@ export interface Project extends Document {
   lokation: string;
   startDate: Date;
   endDate: Date;
+  price: number;
+  totalPrice: number;
   status: string;
   contract: string;
   _createdBy: User['id'];
 
   products: {
     productId: string;     
-    quantity: number;      
+    quantity: number; 
+    price: number;     
   }[];
 
   employees: {

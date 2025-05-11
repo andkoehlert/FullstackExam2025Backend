@@ -11,6 +11,8 @@ import { employeeModel } from '../models/employee'
 interface ProductItem {
   productId: string;
   quantity: number;
+  price: number;
+  name: string;
 }
 
 type EnrichedEmployee = {
@@ -26,7 +28,7 @@ type EnrichedEmployee = {
  */
 export async function createProject(req: Request, res: Response): Promise<void> {
       // Receiving the body
-      const { name, description, lokation, startDate, 
+      const { name, description, lokation, startDate, price,
         endDate, status, contract, products, employees, _createdBy } = req.body;
          
         try {
@@ -44,6 +46,19 @@ export async function createProject(req: Request, res: Response): Promise<void> 
             return;
           }
           
+
+          let totalPrice = price;
+
+          for (const item of products) {
+        const product = await ProductModel.findById(item.productId);
+        if (product) {
+          totalPrice += product.price * item.quantity;
+
+        } else {
+          res.status(400).send("Product not Found")
+          return;
+        }
+      }
           
           const project = new projectModel({
             name,
@@ -51,24 +66,30 @@ export async function createProject(req: Request, res: Response): Promise<void> 
             lokation,
             startDate,
             endDate,
+            price,
+            totalPrice,
             status,
             contract,
             _createdBy,
             products: (products || []).map((p: ProductItem) => ({ 
               productId: p.productId, 
-              quantity: p.quantity 
+              quantity: p.quantity,
             })),          
             employees: enrichedEmployees
 
           
           })
+
+
     
       // Saving a project
 
       const result = await project.save();
-      // Sending back a response
-
-      res.status(201).send(result);
+      // Sending back a response          
+     res.status(201).send({
+      ...result.toObject(), // Convert Mongoose document to a plain object
+      totalPrice // Add the calculated totalPrice to the response
+});
      } catch (err) {
       res.status(500).send("Something went wrong: " + err);
      } finally {
@@ -156,30 +177,37 @@ export async function createProject(req: Request, res: Response): Promise<void> 
  */
 
 export async function getAllProjects(req: Request, res: Response): Promise<void> {
- 
-  // Dont need body because we not sending any data. This is a get request.
   try {
     await connect();
- 
-    const result = await projectModel
+
+    // Using populate to fetch additinal data from product and employee.
+    const projects = await projectModel
       .find({})
-      .populate('employees.employeeId', 'name position'); // <- Add this
+      .populate('products.productId', 'price name') 
+      .populate('employees.employeeId', 'name position');
 
-    // using the find() method 
+    // Map over the projects to inject the price
+    const enrichedProjects = projects.map(project => {
+      const enrichedProducts = project.products.map(p => ({
+        productId: p.productId,
+        quantity: p.quantity,
+        price: p.price,
+        
+      }));
 
-    res.status(200).send(result);
-  }
+      return {
+        ...project.toObject(),
+        products: enrichedProducts
+      };
+    });
 
-  catch (err) {
-    res.status(500).send("Error fetching product:" + err);
-  }
-
-  finally {
+    res.status(200).send(enrichedProjects);
+  } catch (err) {
+    res.status(500).send("Error fetching projects: " + err);
+  } finally {
     await disconnect();
   }
-
 }
-
 
 
 /**

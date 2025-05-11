@@ -11,6 +11,7 @@ const productSchema = new Schema<Product>({
   supplier: { type: String, required: true},
   orderDate: { type: String, required: true, default: 0 },
   arrivalDate: { type: String, required: true, default: 0},
+  price: { type: Number, required: true, min: 0 },
   _createdBy: { type: String, ref: 'User', required: true}
 })
 
