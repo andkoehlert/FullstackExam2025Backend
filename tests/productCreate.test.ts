@@ -75,6 +75,7 @@ export default function productCreateCollection() {
         "supplier": "something",
         "orderDate": 20,
         "arrivalDate": 20,
+        "price": 400,
         "_createdBy": userId
         
     }

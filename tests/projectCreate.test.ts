@@ -49,7 +49,9 @@ export default function projectCreateCollection() {
       lokation: "https://picsum.photos/500/500",
       startDate: "2025-10-20T00:00:00.000Z",
       endDate: "2026-10-20T00:00:00.000Z",
-      status: "completed",  // Completed status for testing
+      status: "completed",
+      price: 500,
+      totalPrice: 0,
       contract: "something",
       __v: 0,
       products: [],
