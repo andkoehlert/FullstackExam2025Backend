@@ -10,5 +10,6 @@ export interface Product extends Document {
   supplier: string;
   orderDate?: String;
   arrivalDate?: String;
-  _createdBy: User['id'];
+ price: number;  
+ _createdBy: User['id'];
 }

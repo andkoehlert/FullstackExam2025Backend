@@ -7,17 +7,30 @@ import {
     getProductById, 
     updateProductById } from './controller/productController';
 
-    import { 
-        createProject, 
-        getAllProjects, 
-        deleteProjectById,
-        getProjectById,
-        getStatusProject, 
-        updateProjectById, } from './controller/projectController';
+import { 
+    createProject, 
+    getAllProjects, 
+    deleteProjectById,
+    getProjectById,
+    getStatusProject, 
+    updateProjectById, } from './controller/projectController';
     
-    import { createEmployee, getAllEmployees, updateEmployeeById, deleteEmployeeById, getEmployeeById } from './controller/employeeController'
-    import {uploadImage} from './controller/uploadImage'
-    import {upload} from './middlewares/multer'
+import { 
+    createEmployee, 
+    getAllEmployees, 
+    updateEmployeeById, 
+    deleteEmployeeById, 
+    getEmployeeById } from './controller/employeeController'
+
+import {
+    createPost,
+    getAllPosts,
+    getPostById,
+    deletePostById,
+    updatePostById } from './controller/post'
+
+import {uploadImage} from './controller/uploadImage'
+import {upload} from './middlewares/multer'
 import { loginUser, registerUser, verifyToken } from './controller/authController';
 
 const router: Router = Router();
@@ -85,7 +98,70 @@ router.post('/upload', upload.single('image'), uploadImage);
 router.post('/products',  createProduct);
 
 // createEmployee
-router.post('/employee',  createEmployee);
+router.post('/employee', verifyToken, createEmployee);
+/**
+ * @swagger
+ * /employee:
+ *   post:
+ *     tags:
+ *       - Employee Routes
+ *     summary: Create a new Employee
+ *     description: Create a new Employee
+ *     security:
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Employee"
+ *           example:
+ *             name: "Alice Johnson"
+ *             position: "Software Engineer"
+ *             description: "Experienced backend developer."
+ *             email: "alice.johnson@example.com"
+ *             profileImage: "https://randomuser.me/api/portraits/women/44.jpg"
+ *             bio: "Alice has over 10 years of experience in full-stack development."
+ *     responses:
+ *       201:
+ *         description: Employee created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Employee"
+ */
+
+// createPost
+router.post('/post', verifyToken, createPost);
+/**
+ * @swagger
+ * /post:
+ *   post:
+ *     tags:
+ *       - Post Routes
+ *     summary: Create a new Post
+ *     description: Create a new Post
+ *     security:
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Post"
+ *           example:
+ *             title: "Weekly Update"
+ *             content: "Here's what we accomplished this week..."
+ *             authorId: "67f398160b555c054a93cc91"
+ *             createdAt: "2025-05-10T10:30:00.000Z"
+ *     responses:
+ *       201:
+ *         description: Post created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Post"
+ */
 
 
 
@@ -94,7 +170,7 @@ router.post('/employee',  createEmployee);
  * /projects:
  *   post:
  *     tags:
- *       - project Routes
+ *       - Project Routes
  *     summary: Create a new project
  *     description: Create a new project
  *     security:
@@ -153,8 +229,51 @@ router.get('/products', getAllProducts);
 
 
 // get all employees
+/**
+ * @swagger
+ * /employees:
+ *   get:
+ *     tags:
+ *       - Employee Routes
+ *     summary: Get all employees
+ *     description: Retrieve a list of all employees
+ *     security:
+ *       - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of employees
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *               $ref: "#/components/schemas/Employees"
+ */
 router.get('/employees', getAllEmployees);
 
+// get all Post
+/**
+ * @swagger
+ * /posts:
+ *   get:
+ *     tags:
+ *       - Post Routes
+ *     summary: Get all posts
+ *     description: Retrieve a list of all posts
+ *     security:
+ *       - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Post"
+ */
+
+router.get('/posts', getAllPosts);
 
 /**
 * @swagger
@@ -241,7 +360,61 @@ router.get('/projects/status/:status', getStatusProject);
  */
 router.get('/products/:id', getProductById);
 
+/**
+ * @swagger
+ * /employees/{id}:
+ *   get:
+ *     tags:
+ *       - Employee Routes
+ *     summary: Get a specific employee
+ *     description: Retrieves a specific employee by their MongoDB ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the employee
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: An employee in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Employee"
+ *       404:
+ *         description: Employee not found
+ */
+
 router.get('/employees/:id', getEmployeeById);
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   get:
+ *     tags:
+ *       - Post Routes
+ *     summary: Get a specific post
+ *     description: Retrieves a specific post by its MongoDB ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the post
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A post in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Post"
+ *       404:
+ *         description: Post not found
+ */
+
+router.get('/posts/:id', getPostById);
 
 
 // The :id is now available in the URL
@@ -251,7 +424,7 @@ router.get('/employees/:id', getEmployeeById);
  * /projects/{id}:
  *   get:
  *     tags:
- *       - Projects Routes
+ *       - Project Routes
  *     summary: Specific project
  *     description: Retrieves a specific projects based on it id.
  *     parameters:
@@ -311,6 +484,71 @@ router.get('/projects/:id', getProjectById);
  */
 router.put('/products/:id', verifyToken, updateProductById)
 
+/**
+ * @swagger
+ * /posts/{id}:
+ *   put:
+ *     tags:
+ *       - Post Routes
+ *     summary: Updates a specific Post
+ *     description: Updates a specific Post based on its ID
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the post
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Post"
+ *     responses:
+ *       200:
+ *         description: Post updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Post"
+ */
+
+router.put('/posts/:id', verifyToken, updatePostById)
+/**
+ * @swagger
+ * /employees/{id}:
+ *   put:
+ *     tags:
+ *       - Employee Routes
+ *     summary: Updates a specific Employee
+ *     description: Updates a specific Employee based on its ID
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the employee
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Employee"
+ *     responses:
+ *       200:
+ *         description: Employee updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Employee"
+ */
+
 router.put('/employees/:id', verifyToken, updateEmployeeById)
 
 
@@ -354,7 +592,7 @@ router.put('/projects/:id', verifyToken, updateProjectById)
  * /products/{id}:
  *   delete:
  *     tags:
- *       - product Routes
+ *       - Product Routes
  *     summary: Deletes a specific product
  *     description: Deletes a specific product based on it id
  *     security:
@@ -378,7 +616,65 @@ router.put('/projects/:id', verifyToken, updateProjectById)
 
 router.delete('/products/:id', verifyToken, deleteProductById)
 
+/**
+ * @swagger
+ * /post/{id}:
+ *   delete:
+ *     tags:
+ *       - Post Routes
+ *     summary: Deletes a specific post
+ *     description: Deletes a specific post based on its ID
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the post
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Post deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Post"
+ *       404:
+ *         description: Post not found
+ */
+
+router.delete('/post/:id', verifyToken, deletePostById)
+/**
+ * @swagger
+ * /Employees/{id}:
+ *   delete:
+ *     tags:
+ *       - Employee Routes
+ *     summary: Deletes a specific employee
+ *     description: Deletes a specific employee based on its ID
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the employee
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Employee deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Employee"
+ *       404:
+ *         description: Employee not found
+ */
+
 router.delete('/Employees/:id', verifyToken, deleteEmployeeById)
+
 
 
 
@@ -387,7 +683,7 @@ router.delete('/Employees/:id', verifyToken, deleteEmployeeById)
  * /projects/{id}:
  *   delete:
  *     tags:
- *       - product Routes
+ *       - Project Routes
  *     summary: Deletes a specific project
  *     description: Deletes a specific project based on it id
  *     security:
@@ -442,6 +738,69 @@ router.delete('/projects/:id', verifyToken, deleteProjectById)
  */
 // auth
 router.post('/user/register', registerUser)
+/**
+ * @swagger
+ * /user/login:
+ *   post:
+ *     tags:
+ *       - User Routes
+ *     summary: Log in a user
+ *     description: Authenticates a user and returns a JWT token if credentials are valid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 example: yourSecurePassword
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         headers:
+ *           auth-token:
+ *             schema:
+ *               type: string
+ *             description: JWT token for authenticated requests
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: null
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     userId:
+ *                       type: string
+ *                       example: 60d0fe4f5311236168a109ca
+ *                     token:
+ *                       type: string
+ *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       400:
+ *         description: Invalid credentials or validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Email or password is wrong"
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/user/login', loginUser )
 
 export default router

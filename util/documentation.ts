@@ -76,6 +76,29 @@ export function setupDocs(app: Application) {
                     },
                     
                 },
+                Employee: {
+  type: 'object',
+  required: ['name', 'position', 'description'],
+  properties: {
+    name: { type: 'string' },
+    position: { type: 'string' },
+    description: { type: 'string' },
+    email: { type: 'string', format: 'email' },
+    profileImage: { type: 'string', format: 'uri' },
+    bio: { type: 'string' },
+  },
+},
+Post: {
+  type: 'object',
+  required: ['title', 'content', 'authorId'],
+  properties: {
+    title: { type: 'string' },
+    content: { type: 'string' }, // Or 'object' if you're using mixed content
+    authorId: { type: 'string' },
+    createdAt: { type: 'string', format: 'date-time' },
+  },
+},
+
             },
         }
     }
