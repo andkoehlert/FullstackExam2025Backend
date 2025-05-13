@@ -12,22 +12,14 @@ const app: Application = express();
 
 export function startServer() {
   
-  app.use(cors({
+ app.use(cors({
   origin: [
-    'http://localhost:3000', 
-    'http://localhost:4000', 
-    'https://frontendexam2025.onrender.com' // ONLY frontend domains
+    'https://frontendexam2025.onrender.com', // Your production frontend
+    'http://localhost:3000' // For local development
   ],
-  credentials: true,
-  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'], // Added OPTIONS
-  allowedHeaders: [
-    'auth-token', 
-    'Origin', 
-    'X-Requested-With', 
-    'Content-Type', 
-    'Accept',
-    'Authorization' // Added Authorization as it's commonly needed
-  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
   
   // JSON body parser - so it can understand json.
