@@ -1,12 +1,10 @@
 import cors from 'cors';
 import { setupDocs } from '../util/documentation';
 import express, {Application, Request, Response} from 'express'
-import DotenvFlow from 'dotenv-flow';
 import routes from './routes';
 import {testConnection} from './repositroy/database'
 
 
-DotenvFlow.config();
 
 
 // create express application test
@@ -15,11 +13,22 @@ const app: Application = express();
 export function startServer() {
   
   app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:4000', 'https://fullstackexam2025backend.onrender.com', 'https://frontendexam2025.onrender.com'],
-    credentials: true,
-    methods: 'GET, PUT, POST, DELETE',
-    allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accepts'],
-  }));
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:4000', 
+    'https://frontendexam2025.onrender.com' // ONLY frontend domains
+  ],
+  credentials: true,
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'], // Added OPTIONS
+  allowedHeaders: [
+    'auth-token', 
+    'Origin', 
+    'X-Requested-With', 
+    'Content-Type', 
+    'Accept',
+    'Authorization' // Added Authorization as it's commonly needed
+  ],
+}));
   
   // JSON body parser - so it can understand json.
   app.use(express.json());
