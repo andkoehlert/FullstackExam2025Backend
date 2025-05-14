@@ -223,7 +223,9 @@ router.post('/projects', verifyToken,  createProject);
 *     tags:
 *       - Product Routes
 *     summary: Retrieves a list of Products
-*     description: Retrieves a list of products as JSON objects.
+*     description: Retrieves a list of products as JSON objects
+*     security:
+*       - ApiKeyAuth: []
 *     responses:
 *       200:
 *         description: A list of product JSON objects in an array.
@@ -287,23 +289,25 @@ router.get('/tasks', verifyToken, getAllTasks);
 router.get('/posts', verifyToken, getAllPosts);
 
 /**
-* @swagger
-* /Projects:
-*   get:
-*     tags:
-*       - Project Routes
-*     summary: Retrieves a list of Project
-*     description: Retrieves a list of Project as JSON objects.
-*     responses:
-*       200:
-*         description: A list of Project JSON objects in an array.
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: "#/components/schemas/Project"
-*/
+ * @swagger
+ * /Projects:
+ *   get:
+ *     tags:
+ *       - Project Routes
+ *     summary: Retrieves a list of Projects
+ *     description: Retrieves a list of Projects as JSON objects.
+ *     security:
+ *       - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of Project JSON objects in an array.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Project"
+ */
 
 
 router.get('/projects', verifyToken, getAllProjects);
@@ -317,6 +321,8 @@ router.get('/projects', verifyToken, getAllProjects);
  *       - Project Routes
  *     summary: Get projects by status
  *     description: Returns projects filtered by their status.
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: status
@@ -351,7 +357,9 @@ router.get('/projects/status/:status', verifyToken, getStatusProject);
  *     tags:
  *       - Product Routes
  *     summary: Specific products
- *     description: Retrieves a specific products based on it id.
+ *     description: Retrieves a specific product based on its ID.
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -361,14 +369,13 @@ router.get('/projects/status/:status', verifyToken, getStatusProject);
  *           type: string
  *     responses:
  *       200:
- *         description: A products in the format of a JSON object.
+ *         description: A product in the format of a JSON object.
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Product"
+ *               $ref: "#/components/schemas/Product"
  */
+
 router.get('/products/:id', verifyToken, getProductById);
 
 router.get('/tasks/:id', verifyToken, getTaskById);
@@ -381,6 +388,8 @@ router.get('/tasks/:id', verifyToken, getTaskById);
  *       - Employee Routes
  *     summary: Get a specific employee
  *     description: Retrieves a specific employee by their MongoDB ID.
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -399,6 +408,7 @@ router.get('/tasks/:id', verifyToken, getTaskById);
  *         description: Employee not found
  */
 
+
 router.get('/employees/:id', verifyToken, getEmployeeById);
 
 /**
@@ -409,6 +419,8 @@ router.get('/employees/:id', verifyToken, getEmployeeById);
  *       - Post Routes
  *     summary: Get a specific post
  *     description: Retrieves a specific post by its MongoDB ID.
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -427,6 +439,7 @@ router.get('/employees/:id', verifyToken, getEmployeeById);
  *         description: Post not found
  */
 
+
 router.get('/posts/:id', verifyToken, getPostById);
 
 
@@ -438,26 +451,29 @@ router.get('/posts/:id', verifyToken, getPostById);
  *   get:
  *     tags:
  *       - Project Routes
- *     summary: Specific project
- *     description: Retrieves a specific projects based on it id.
+ *     summary: Get a specific project
+ *     description: Retrieves a specific project based on its ID.
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: MongoDB id
+ *         description: MongoDB ID of the project
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: A projects in the format of a JSON object.
+ *         description: A project in the format of a JSON object.
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Projects"
+ *               $ref: "#/components/schemas/Project"
+ *       404:
+ *         description: Project not found
  */
-router.get('/projects/:id', verifyToken, getProjectById);
+
+router.get('/projects/:id', verifyToken, getProjectById); 
 
 // update and delete
 
@@ -532,7 +548,7 @@ router.put('/tasks/:id', verifyToken, updateTaskById);
  *               $ref: "#/components/schemas/Post"
  */
 
-router.put('/posts/:id', verifyToken, updatePostById)
+router.put('/posts/:id', verifyToken, updatePostById) 
 /**
  * @swagger
  * /employees/{id}:
