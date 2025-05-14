@@ -102,7 +102,7 @@ router.post('/upload', upload.single('image'), uploadImage);
  *               $ref: "#/components/schemas/Product"
  */
 // When we access products endpoint it will fire the 'creteProduct' from the controller.
-router.post('/products',  createProduct);
+router.post('/products', verifyToken,  createProduct);
 
 // createEmployee
 router.post('/employee', verifyToken, createEmployee);
@@ -138,7 +138,7 @@ router.post('/employee', verifyToken, createEmployee);
  *               $ref: "#/components/schemas/Employee"
  */
 
-router.post('/tasks', createTask);
+router.post('/tasks', verifyToken, createTask);
 
 // createPost
 router.post('/post', verifyToken, createPost);
@@ -210,7 +210,7 @@ router.post('/post', verifyToken, createPost);
  *               $ref: "#/components/schemas/Project"
  */
 // When we access products endpoint it will fire the 'createProject' from the controller.
-router.post('/projects',  createProject);
+router.post('/projects', verifyToken,  createProject);
 
 
 
@@ -234,7 +234,7 @@ router.post('/projects',  createProject);
 *               items:
 *                 $ref: "#/components/schemas/Product"
 */
-router.get('/products', getAllProducts);
+router.get('/products', verifyToken, getAllProducts);
 
 
 // get all employees
@@ -258,9 +258,9 @@ router.get('/products', getAllProducts);
  *               items:
  *               $ref: "#/components/schemas/Employees"
  */
-router.get('/employees', getAllEmployees);
+router.get('/employees', verifyToken, getAllEmployees);
 
-router.get('/tasks', getAllTasks);
+router.get('/tasks', verifyToken, getAllTasks);
 
 // get all Post
 /**
@@ -284,7 +284,7 @@ router.get('/tasks', getAllTasks);
  *                 $ref: "#/components/schemas/Post"
  */
 
-router.get('/posts', getAllPosts);
+router.get('/posts', verifyToken, getAllPosts);
 
 /**
 * @swagger
@@ -306,7 +306,7 @@ router.get('/posts', getAllPosts);
 */
 
 
-router.get('/projects', getAllProjects);
+router.get('/projects', verifyToken, getAllProjects);
 
 
 /**
@@ -336,7 +336,7 @@ router.get('/projects', getAllProjects);
  *                 $ref: "#/components/schemas/Project"
  */
 
-router.get('/projects/status/:status', getStatusProject);
+router.get('/projects/status/:status', verifyToken, getStatusProject);
 
 
 
@@ -369,9 +369,9 @@ router.get('/projects/status/:status', getStatusProject);
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get('/products/:id', getProductById);
+router.get('/products/:id', verifyToken, getProductById);
 
-router.get('/tasks/:id', getTaskById);
+router.get('/tasks/:id', verifyToken, getTaskById);
 
 /**
  * @swagger
@@ -399,7 +399,7 @@ router.get('/tasks/:id', getTaskById);
  *         description: Employee not found
  */
 
-router.get('/employees/:id', getEmployeeById);
+router.get('/employees/:id', verifyToken, getEmployeeById);
 
 /**
  * @swagger
@@ -427,7 +427,7 @@ router.get('/employees/:id', getEmployeeById);
  *         description: Post not found
  */
 
-router.get('/posts/:id', getPostById);
+router.get('/posts/:id', verifyToken, getPostById);
 
 
 // The :id is now available in the URL
@@ -457,7 +457,7 @@ router.get('/posts/:id', getPostById);
  *               items:
  *                 $ref: "#/components/schemas/Projects"
  */
-router.get('/projects/:id', getProjectById);
+router.get('/projects/:id', verifyToken, getProjectById);
 
 // update and delete
 
@@ -497,7 +497,7 @@ router.get('/projects/:id', getProjectById);
  */
 router.put('/products/:id', verifyToken, updateProductById)
 
-router.put('/tasks/:id', updateTaskById);
+router.put('/tasks/:id', verifyToken, updateTaskById);
 
 
 /**
@@ -633,7 +633,7 @@ router.put('/projects/:id', verifyToken, updateProjectById)
 router.delete('/products/:id', verifyToken, deleteProductById)
 
 
-router.delete('/tasks/:id', deleteTaskById);
+router.delete('/tasks/:id', verifyToken, deleteTaskById);
 
 /**
  * @swagger
