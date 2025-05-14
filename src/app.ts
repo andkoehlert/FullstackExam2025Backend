@@ -13,7 +13,11 @@ const app: Application = express();
 export function startServer() {
   
   app.use(cors({
-  origin: "*",
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:4000', 
+    'https://frontendexam2025.onrender.com' // ONLY frontend domains
+  ],
   credentials: true,
   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'], // Added OPTIONS
   allowedHeaders: [
