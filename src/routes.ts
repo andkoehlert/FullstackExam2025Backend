@@ -29,6 +29,13 @@ import {
     deletePostById,
     updatePostById } from './controller/post'
 
+import { 
+    createTask, 
+    getAllTasks,
+    deleteTaskById,
+    getTaskById,
+    updateTaskById } from './controller/taskController';
+
 import {uploadImage} from './controller/uploadImage'
 import {upload} from './middlewares/multer'
 import { loginUser, registerUser, verifyToken } from './controller/authController';
@@ -130,6 +137,8 @@ router.post('/employee', verifyToken, createEmployee);
  *             schema:
  *               $ref: "#/components/schemas/Employee"
  */
+
+router.post('/tasks', createTask);
 
 // createPost
 router.post('/post', verifyToken, createPost);
@@ -251,6 +260,8 @@ router.get('/products', getAllProducts);
  */
 router.get('/employees', getAllEmployees);
 
+router.get('/tasks', getAllTasks);
+
 // get all Post
 /**
  * @swagger
@@ -359,6 +370,8 @@ router.get('/projects/status/:status', getStatusProject);
  *                 $ref: "#/components/schemas/Product"
  */
 router.get('/products/:id', getProductById);
+
+router.get('/tasks/:id', getTaskById);
 
 /**
  * @swagger
@@ -483,6 +496,9 @@ router.get('/projects/:id', getProjectById);
  *               $ref: "#/components/schemas/Product"
  */
 router.put('/products/:id', verifyToken, updateProductById)
+
+router.put('/tasks/:id', updateTaskById);
+
 
 /**
  * @swagger
@@ -615,6 +631,9 @@ router.put('/projects/:id', verifyToken, updateProjectById)
  */
 
 router.delete('/products/:id', verifyToken, deleteProductById)
+
+
+router.delete('/tasks/:id', deleteTaskById);
 
 /**
  * @swagger
