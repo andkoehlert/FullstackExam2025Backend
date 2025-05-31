@@ -53,13 +53,10 @@ export function setupDocs(app: Application) {
                 User: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string' },
                         name: { type: 'string' },
                         email: { type: 'string' },
                         password: { type: 'string' },
-                        registerDate: { type: 'string' },
-                        number: { type: 'number' },
-                        role: { type: 'string' },
+                      
                     },
                     
                 },
