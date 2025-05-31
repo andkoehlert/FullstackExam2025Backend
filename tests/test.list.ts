@@ -6,8 +6,11 @@ import health from './health.test';
 import userTestCollection from './user.test';
 import productCreateCollection from './productCreate.test'
 import projectCreateCollection from './projectCreate.test'
+import employeeCreateCollection from './employee.test'
 import dotenvFlow from 'dotenv-flow';
 import {connect, disconnect} from "../src/repositroy/database"
+import {employeeModel} from "../src/models/employee"
+import {projectModel} from "../src/models/projectModel"
 import {userModel} from "../src/models/userModel"
 import {ProductModel} from "../src/models/productModel"
 dotenvFlow.config();
@@ -20,6 +23,8 @@ function setup() {
       await connect();
       await userModel.deleteMany({});
       await ProductModel.deleteMany({});
+      await projectModel.deleteMany({});
+      await employeeModel.deleteMany({});
 
     }
     finally {
@@ -35,6 +40,8 @@ function setup() {
       await connect();
       await userModel.deleteMany({})
       await ProductModel.deleteMany({})
+      await projectModel.deleteMany({});
+      await employeeModel.deleteMany({});
 
     }
     finally {
@@ -49,4 +56,5 @@ test.describe(health);
 test.describe(userTestCollection);
 test.describe(productCreateCollection)
 test.describe(projectCreateCollection)
+test.describe(employeeCreateCollection)
 
